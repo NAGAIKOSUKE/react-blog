@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./home.css";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 
 const Home = () => {
   const [postList, setPostList] = useState([]);
@@ -20,31 +21,40 @@ const Home = () => {
   };
 
   return (
-    <div className="homePage">
+    <Box className="homePage">
       {postList.map((post) => {
         return (
-          <div className="postContents" key={post.id}>
-            <div className="postHeader">
-              <h1>{post.title}</h1>
-            </div>
+          <Box className="postContents" key={post.id}>
+            <Box className="postHeader">
+              <Heading as="h1" size="lg">
+                {post.title}
+              </Heading>
+            </Box>
 
-            <div className="postTextContainer">{post.postText}</div>
-            <div className="nameAndDeleteButton">
-              <h3>@{post.author.username}</h3>
+            <Box className="postTextContainer">
+              <Text>{post.postText}</Text>
+            </Box>
+            <Box className="nameAndDeleteButton">
+              <Text>@{post.author.username}</Text>
               {post.author.id === auth.currentUser?.uid && (
-                <button
+                <Button
                   onClick={() => {
                     handleDelete(post.id);
                   }}
+                  colorScheme="red"
+                  size="sm"
+                  width="50px"
+                  display="flex"
+                  justifyContent="flex-end"
                 >
                   削除
-                </button>
+                </Button>
               )}
-            </div>
-          </div>
+            </Box>
+          </Box>
         );
       })}
-    </div>
+    </Box>
   );
 };
 
